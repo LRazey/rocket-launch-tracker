@@ -1,29 +1,38 @@
-<strong>**DO NOT DISTRIBUTE OR PUBLICLY POST SOLUTIONS TO THESE LABS. MAKE ALL FORKS OF THIS REPOSITORY WITH SOLUTION CODE PRIVATE. PLEASE REFER TO THE STUDENT CODE OF CONDUCT AND ETHICAL EXPECTATIONS FOR COLLEGE OF INFORMATION TECHNOLOGY STUDENTS FOR SPECIFICS. **</strong>
+# Rocket Launch Tracker
 
-# WESTERN GOVERNORS UNIVERSITY 
-## D424 – SOFTWARE ENGINEERING CAPSTONE
-Welcome to Software Engineering Capstone! This is an opportunity for students to develop full stack software engineering documentation and applications. They will execute documentation, unit testing, revision of software applications, and deploy software applications with scripts and containers on a cloud platform.
+A full-stack web application for space enthusiasts to browse upcoming rocket
+launches and manage a personal watchlist. Built for the WGU D424 Software
+Engineering Capstone.
 
-FOR SPECIFIC TASK INSTRUCTIONS AND REQUIREMENTS FOR THIS ASSESSMENT, PLEASE REFER TO THE COURSE PAGE.
-BASIC INSTRUCTIONS
-For this assessment, you will deploy your developed full stack software product to a web service of your choice.
+## Overview
 
+Users can browse upcoming launches (sourced live from the Launch Library 2 API),
+search and filter by agency and date, and save launches to a personal watchlist
+with full create/modify/delete support, reminders, and a watchlist report.
 
-## SUPPLEMENTAL RESOURCES  
-1.	How to clone a project to IntelliJ using Git?
+## Tech Stack
 
-> Ensure that you have Git installed on your system and that IntelliJ is installed using [Toolbox](https://www.jetbrains.com/toolbox-app/). Make sure that you are using version 2022.3.2. Once this has been confirmed, click the clone button and use the 'IntelliJ IDEA (HTTPS)' button. This will open IntelliJ with a prompt to clone the proejct. Save it in a safe location for the directory and press clone. IntelliJ will prompt you for your credentials. Enter in your WGU Credentials and the project will be cloned onto your local machine.  
+- **Backend:** Java + Spring Boot (REST API), Spring Data JPA / Hibernate
+- **Frontend:** React
+- **Database:** PostgreSQL
+- **Security:** Spring Security (BCrypt password hashing, JWT authentication)
+- **External API:** Launch Library 2 (https://thespacedevs.com/llapi)
+- **Hosting:** Railway
+- **Version control:** GitLab
 
-2. How to create a branch and start Development?
+## Project Structure
 
-- GitLab method
-> Press the '+' button located near your branch name. In the dropdown list, press the 'New branch' button. This will allow you to create a name for your branch. Once the branch has been named, you can select 'Create Branch' to push the branch to your repository.
+```
+SpaceLaunchTracker/
+  backend/    Spring Boot REST API
+  frontend/   React single-page app
+```
 
-- IntelliJ method
-> In IntelliJ, Go to the 'Git' button on the top toolbar. Select the new branch option and create a name for the branch. Make sure checkout branch is selected and press create. You can now add a commit message and push the new branch to the local repo.
+## Getting Started
 
-## SUPPORT
-If you need additional support, please navigate to the course page and reach out to your course instructor.
+_Setup and run instructions will be documented here as the application is built
+(this section will become the maintenance user guide required for Task 3, Part C)._
 
-## FUTURE USE
-Take this opportunity to create or add to a simple resume portfolio to highlight and showcase your work for future use in career search, experience, and education!
+## Author
+
+Levi Razey
