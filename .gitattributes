@@ -1,0 +1,19 @@
+# Normalize all text files to LF in the repo; check out native on each OS.
+* text=auto
+
+# Force LF for source and config files regardless of platform.
+*.java   text eol=lf
+*.xml    text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.properties text eol=lf
+*.jsx    text eol=lf
+*.js     text eol=lf
+*.json   text eol=lf
+*.css    text eol=lf
+*.html   text eol=lf
+
+# Windows scripts stay CRLF.
+*.cmd    text eol=crlf
+*.bat    text eol=crlf
