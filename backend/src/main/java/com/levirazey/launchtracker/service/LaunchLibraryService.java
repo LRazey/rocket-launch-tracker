@@ -1,0 +1,61 @@
+package com.levirazey.launchtracker.service;
+
+import com.levirazey.launchtracker.dto.LaunchData;
+import com.levirazey.launchtracker.model.Launch;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+import tools.jackson.databind.JsonNode;
+
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class LaunchLibraryService {
+
+    private final RestClient restClient;
+    private final LaunchFactory launchFactory;
+
+    public LaunchLibraryService(LaunchFactory launchFactory) {
+        this.launchFactory = launchFactory;
+        this.restClient = RestClient.builder()
+                .baseUrl("https://lldev.thespacedevs.com/2.3.0")
+                .build();
+    }
+
+    public List<Launch> getUpcomingLaunches() {
+        JsonNode root = restClient.get()
+                .uri("/launches/upcoming/?format=json&limit=10")
+                .retrieve()
+                .body(JsonNode.class);
+
+        List<Launch> launches = new ArrayList<>();
+        JsonNode results = root.get("results");
+        if (results != null) {
+            for (JsonNode node : results) {
+                LaunchData data = parseLaunch(node);
+                launches.add(launchFactory.createLaunch(data));
+            }
+        }
+        return launches;
+    }
+
+    private LaunchData parseLaunch(JsonNode node) {
+        String name = node.path("name").asString("");
+        String agency = node.path("launch_service_provider").path("name").asString("");
+        String status = node.path("status").path("name").asString("");
+
+        String netText = node.path("net").asString("");
+        LocalDateTime net = netText.isEmpty() ? null : OffsetDateTime.parse(netText).toLocalDateTime();
+
+        JsonNode mission = node.path("mission");
+        String missionType = mission.path("type").asString("");
+        boolean isCrewed = missionType.equalsIgnoreCase("Human Exploration");
+
+        List<String> crewRoster = isCrewed ? new ArrayList<>() : null;
+        String payload = isCrewed ? null : mission.path("name").asString("");
+
+        return new LaunchData(name, agency, net, status, isCrewed, crewRoster, payload);
+    }
+}
