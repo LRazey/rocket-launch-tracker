@@ -30,7 +30,28 @@ public class LaunchLibraryService {
                 .retrieve()
                 .body(JsonNode.class);
 
+        return toLaunches(root);
+    }
+
+    public List<Launch> searchLaunches(String query) {
+        JsonNode root = restClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/launches/upcoming/")
+                        .queryParam("format", "json")
+                        .queryParam("limit", "10")
+                        .queryParam("search", query)
+                        .build())
+                .retrieve()
+                .body(JsonNode.class);
+
+        return toLaunches(root);
+    }
+
+    private List<Launch> toLaunches(JsonNode root) {
         List<Launch> launches = new ArrayList<>();
+        if (root == null) {
+            return launches;
+        }
         JsonNode results = root.get("results");
         if (results != null) {
             for (JsonNode node : results) {
