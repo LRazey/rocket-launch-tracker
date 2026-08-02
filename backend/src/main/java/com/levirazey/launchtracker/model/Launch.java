@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public abstract class Launch {
 
+    private String id;
     private String name;
     private String agency;
     private LocalDateTime net;
@@ -11,11 +12,16 @@ public abstract class Launch {
 
     public abstract String getSummary();
 
-    public Launch(String name, String agency, LocalDateTime net, String status) {
+    public Launch(String id, String name, String agency, LocalDateTime net, String status) {
+        this.id = id;
         this.name = name;
         this.agency = agency;
         this.net = net;
         this.status = status;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

@@ -6,6 +6,7 @@ import com.levirazey.launchtracker.dto.WatchlistUpdateRequest;
 import com.levirazey.launchtracker.entity.User;
 import com.levirazey.launchtracker.entity.WatchlistEntry;
 import com.levirazey.launchtracker.exception.ResourceNotFoundException;
+import com.levirazey.launchtracker.model.Launch;
 import com.levirazey.launchtracker.repository.UserRepository;
 import com.levirazey.launchtracker.repository.WatchlistRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,10 +19,21 @@ public class WatchlistService {
 
     private final WatchlistRepository watchlistRepository;
     private final UserRepository userRepository;
+    private final LaunchLibraryService launchLibraryService;
 
-    public WatchlistService(WatchlistRepository watchlistRepository, UserRepository userRepository) {
+    public WatchlistService(WatchlistRepository watchlistRepository, UserRepository userRepository, LaunchLibraryService launchLibraryService) {
         this.watchlistRepository = watchlistRepository;
         this.userRepository = userRepository;
+        this.launchLibraryService = launchLibraryService;
+    }
+
+    private Launch safeGetLaunch(String launchId) {
+        try {
+            return launchLibraryService.getLaunchById(launchId);
+        } catch (Exception e) {
+            System.out.println("Launch lookup failed for " + launchId + ": " + e.getMessage());
+            return null;
+        }
     }
 
     private User getUser(String username) {
@@ -34,7 +46,7 @@ public class WatchlistService {
         User user = getUser(username);
 
         return watchlistRepository.findByUser(user).stream()
-                .map(WatchlistEntryResponse::from)
+                .map(entry -> WatchlistEntryResponse.from(entry, safeGetLaunch(entry.getLaunchId())))
                 .toList();
     }
 
@@ -43,7 +55,8 @@ public class WatchlistService {
         if (watchlistRepository.existsByUserAndLaunchId(user, request.getLaunchId()))
             throw new IllegalArgumentException("That launch is already on your watchlist");
         WatchlistEntry entry = new WatchlistEntry(request.getLaunchId(), false, false, user);
-        return WatchlistEntryResponse.from(watchlistRepository.save(entry));
+        WatchlistEntry saved = watchlistRepository.save(entry);
+        return WatchlistEntryResponse.from(saved, safeGetLaunch(saved.getLaunchId()));
     }
 
     public WatchlistEntryResponse updateEntry(String username, Long id, WatchlistUpdateRequest request) {
@@ -56,7 +69,8 @@ public class WatchlistService {
         if (request.getWatched() != null) {
             entry.setWatched(request.getWatched());
         }
-        return WatchlistEntryResponse.from(watchlistRepository.save(entry));
+        WatchlistEntry saved = watchlistRepository.save(entry);
+        return WatchlistEntryResponse.from(saved, safeGetLaunch(saved.getLaunchId()));
     }
 
     public void deleteEntry(String username, Long id) {

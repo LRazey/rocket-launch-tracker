@@ -4,6 +4,8 @@ import LaunchesPage from './pages/LaunchesPage.jsx'
 import {useAuth} from "./context/AuthContext.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import WatchlistPage from "./pages/WatchlistPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
     const { isLoggedIn, logout} = useAuth()
@@ -35,6 +37,11 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="*" element={<Navigate to="/launches" replace />} />
+                <Route path="/watchlist" element={
+                    <ProtectedRoute>
+                        <WatchlistPage />
+                    </ProtectedRoute>
+                } />
             </Routes>
         </>
     )

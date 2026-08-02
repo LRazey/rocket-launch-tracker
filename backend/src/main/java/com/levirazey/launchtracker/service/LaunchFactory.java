@@ -11,9 +11,9 @@ public class LaunchFactory {
 
     public Launch createLaunch(LaunchData data) {
         if (data.isCrewed()) {
-            return new CrewedLaunch(data.getName(), data.getAgency(), data.getNet(), data.getStatus(), data.getCrewRoster());
+            return new CrewedLaunch(data.getId(), data.getName(), data.getAgency(), data.getNet(), data.getStatus(), data.getCrewRoster());
         } else {
-            return new UncrewedLaunch(data.getName(), data.getAgency(), data.getNet(), data.getStatus(), data.getPayload());
+            return new UncrewedLaunch(data.getId(), data.getName(), data.getAgency(), data.getNet(), data.getStatus(), data.getPayload());
         }
     }
 }

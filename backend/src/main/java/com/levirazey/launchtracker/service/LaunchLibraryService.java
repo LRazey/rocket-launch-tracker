@@ -47,6 +47,21 @@ public class LaunchLibraryService {
         return toLaunches(root);
     }
 
+    public Launch getLaunchById(String id) {
+        JsonNode node = restClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/launches/" + id + "/")
+                        .queryParam("format", "json")
+                        .build())
+                .retrieve()
+                .body(JsonNode.class);
+
+        if (node == null) {
+            return null;
+        }
+        return launchFactory.createLaunch(parseLaunch(node));
+    }
+
     private List<Launch> toLaunches(JsonNode root) {
         List<Launch> launches = new ArrayList<>();
         if (root == null) {
@@ -63,6 +78,7 @@ public class LaunchLibraryService {
     }
 
     private LaunchData parseLaunch(JsonNode node) {
+        String id = node.path("id").asString("");
         String name = node.path("name").asString("");
         String agency = node.path("launch_service_provider").path("name").asString("");
         String status = node.path("status").path("name").asString("");
@@ -77,6 +93,6 @@ public class LaunchLibraryService {
         List<String> crewRoster = isCrewed ? new ArrayList<>() : null;
         String payload = isCrewed ? null : mission.path("name").asString("");
 
-        return new LaunchData(name, agency, net, status, isCrewed, crewRoster, payload);
+        return new LaunchData(id, name, agency, net, status, isCrewed, crewRoster, payload);
     }
 }

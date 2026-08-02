@@ -8,8 +8,8 @@ public class CrewedLaunch extends Launch {
 
     private List<String> crewRoster;
 
-    public CrewedLaunch(String name, String agency, LocalDateTime net, String status, List<String> crewRoster) {
-        super(name, agency, net, status);
+    public CrewedLaunch(String id, String name, String agency, LocalDateTime net, String status, List<String> crewRoster) {
+        super(id, name, agency, net, status);
         this.crewRoster = crewRoster;
     }
 

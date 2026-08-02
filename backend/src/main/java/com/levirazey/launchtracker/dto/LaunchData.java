@@ -5,6 +5,7 @@ import java.util.List;
 
 public class LaunchData {
 
+    private String id;
     private String name;
     private String agency;
     private LocalDateTime net;
@@ -13,7 +14,8 @@ public class LaunchData {
     private List<String> crewRoster;
     private String payload;
 
-    public LaunchData(String name, String agency, LocalDateTime net, String status, boolean isCrewed, List<String> crewRoster, String payload) {
+    public LaunchData(String id, String name, String agency, LocalDateTime net, String status, boolean isCrewed, List<String> crewRoster, String payload) {
+        this.id = id;
         this.name = name;
         this.agency = agency;
         this.net = net;
@@ -21,6 +23,10 @@ public class LaunchData {
         this.isCrewed = isCrewed;
         this.crewRoster = crewRoster;
         this.payload = payload;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

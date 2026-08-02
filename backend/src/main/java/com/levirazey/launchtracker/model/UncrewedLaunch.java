@@ -6,8 +6,8 @@ public class UncrewedLaunch extends Launch {
 
     private String payload;
 
-    public UncrewedLaunch(String name, String agency, LocalDateTime net, String status, String payload) {
-        super(name, agency, net, status);
+    public UncrewedLaunch(String id, String name, String agency, LocalDateTime net, String status, String payload) {
+        super(id, name, agency, net, status);
         this.payload = payload;
     }
 
