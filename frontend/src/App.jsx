@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import WatchlistPage from "./pages/WatchlistPage.jsx";
 import ReportPage from "./pages/ReportPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import NotificationBell from "./components/NotificationBell.jsx";
 
 function App() {
     const { isLoggedIn, logout} = useAuth()
@@ -23,7 +24,10 @@ function App() {
                     </Nav>
                     <Nav>
                         {isLoggedIn ? (
-                            <Button variant="outline-light" size="sm" onClick={logout}>Log Out</Button>
+                            <>
+                                <NotificationBell />
+                                <Button variant="outline-light" size="sm" className="ms-3" onClick={logout}>Log Out</Button>
+                            </>
                         ) : (
                             <>
                                 <Nav.Link as={Link} to="/login">Log in</Nav.Link>

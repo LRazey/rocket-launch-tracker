@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react'
 import {Alert, Button, Card, Container, Form, InputGroup} from 'react-bootstrap'
 import {apiFetch} from "../api/client.js";
 import {useAuth} from "../context/AuthContext.jsx";
+import {useNavigate} from "react-router-dom";
 
 function LaunchesPage() {
     const [launches, setLaunches] = useState([])
     const [message, setMessage] = useState('')
     const { isLoggedIn } = useAuth()
     const [query,setQuery] = useState('')
+    const navigate = useNavigate()
 
     async function loadUpcoming() {
         const res = await fetch('/api/launches/upcoming')
@@ -29,6 +31,10 @@ function LaunchesPage() {
     }
 
     async function handleAdd(launch) {
+        if (!isLoggedIn) {
+            navigate('/register')
+            return
+        }
         setMessage('')
         try {
             await apiFetch('/api/watchlist', {
@@ -75,14 +81,16 @@ function LaunchesPage() {
                     <Card.Body>
                         <Card.Title>{launch.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">{launch.agency}</Card.Subtitle>
+                        <Card.Text>
+                            <strong>Launch Date (NET):</strong>{' '}
+                            {launch.net ? new Date(launch.net).toLocaleString() : 'TBD'}
+                        </Card.Text>
                         <Card.Text>{launch.summary}</Card.Text>
                         <Card.Text><strong>Status:</strong> {launch.status}</Card.Text>
 
-                        {isLoggedIn && (
                             <Button variant="outline-primary" size="sm" onClick={() => handleAdd(launch)}>
                                 Add to Watchlist
                             </Button>
-                        )}
                     </Card.Body>
                 </Card>
             ))}
