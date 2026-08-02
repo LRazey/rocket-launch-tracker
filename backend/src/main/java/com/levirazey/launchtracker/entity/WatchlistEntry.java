@@ -2,6 +2,8 @@ package com.levirazey.launchtracker.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "watchlist_entry", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "launch_id"}))
 public class WatchlistEntry {
@@ -23,6 +25,9 @@ public class WatchlistEntry {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(nullable = false)
+    private LocalDateTime savedDate;
+
     public void toggleReminder() {
         this.reminderEnabled = !this.reminderEnabled;
     }
@@ -34,6 +39,7 @@ public class WatchlistEntry {
         this.reminderEnabled = reminderEnabled;
         this.watched = watched;
         this.user = user;
+        this.savedDate = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -70,5 +76,9 @@ public class WatchlistEntry {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getSavedDate() {
+        return savedDate;
     }
 }

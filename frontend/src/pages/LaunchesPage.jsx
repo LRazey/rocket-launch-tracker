@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import {Alert, Button, Card, Container} from 'react-bootstrap'
+import {Alert, Button, Card, Container, Form, InputGroup} from 'react-bootstrap'
 import {apiFetch} from "../api/client.js";
 import {useAuth} from "../context/AuthContext.jsx";
 
@@ -7,12 +7,26 @@ function LaunchesPage() {
     const [launches, setLaunches] = useState([])
     const [message, setMessage] = useState('')
     const { isLoggedIn } = useAuth()
+    const [query,setQuery] = useState('')
+
+    async function loadUpcoming() {
+        const res = await fetch('/api/launches/upcoming')
+        setLaunches(await res.json())
+    }
 
     useEffect(() => {
-        fetch('/api/launches/upcoming')
-            .then((res) => res.json())
-            .then((data) => setLaunches(data))
+        loadUpcoming()
     }, [])
+
+    async function handleSearch(event) {
+        event.preventDefault()
+        if (!query.trim()) {
+            loadUpcoming()
+            return
+        }
+        const res = await fetch(`/api/launches/search?q=${encodeURIComponent(query)}`)
+        setLaunches(await res.json())
+    }
 
     async function handleAdd(launch) {
         setMessage('')
@@ -30,6 +44,20 @@ function LaunchesPage() {
     return (
         <Container className="mt-4">
             <h1>Upcoming Launches</h1>
+
+            <Form onSubmit={handleSearch} className="mb-4">
+                <InputGroup>
+                    <Form.Control
+                        placeholder="Search launches (e.g. Starlink, SpaceX)"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <Button type="submit" variant="primary">Search</Button>
+                    <Button variant="outline-secondary" onClick={() => { setQuery(''); loadUpcoming() }}>
+                        Clear
+                    </Button>
+                </InputGroup>
+            </Form>
 
             {message && (
                 <Alert

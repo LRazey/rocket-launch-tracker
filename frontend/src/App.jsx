@@ -5,6 +5,7 @@ import {useAuth} from "./context/AuthContext.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import WatchlistPage from "./pages/WatchlistPage.jsx";
+import ReportPage from "./pages/ReportPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/launches">Launches</Nav.Link>
                         {isLoggedIn && <Nav.Link as={Link} to="/watchlist">My Watchlist</Nav.Link>}
+                        {isLoggedIn && <Nav.Link as={Link} to="/report">Report</Nav.Link>}
                     </Nav>
                     <Nav>
                         {isLoggedIn ? (
@@ -40,6 +42,11 @@ function App() {
                 <Route path="/watchlist" element={
                     <ProtectedRoute>
                         <WatchlistPage />
+                    </ProtectedRoute>
+                } />
+                <Route path="/report" element={
+                    <ProtectedRoute>
+                        <ReportPage />
                     </ProtectedRoute>
                 } />
             </Routes>
