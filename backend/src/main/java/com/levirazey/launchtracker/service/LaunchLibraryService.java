@@ -2,6 +2,7 @@ package com.levirazey.launchtracker.service;
 
 import com.levirazey.launchtracker.dto.LaunchData;
 import com.levirazey.launchtracker.model.Launch;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.JsonNode;
@@ -17,10 +18,10 @@ public class LaunchLibraryService {
     private final RestClient restClient;
     private final LaunchFactory launchFactory;
 
-    public LaunchLibraryService(LaunchFactory launchFactory) {
+    public LaunchLibraryService(LaunchFactory launchFactory, @Value("${launchlibrary.base-url}") String baseUrl) {
         this.launchFactory = launchFactory;
         this.restClient = RestClient.builder()
-                .baseUrl("https://lldev.thespacedevs.com/2.3.0")
+                .baseUrl(baseUrl)
                 .build();
     }
 

@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/launches/**").permitAll()
                 .requestMatchers("/error").permitAll()
+                .requestMatchers("/", "/index.html", "/assets/**", "/*.ico", "/*.svg").permitAll()
+                .requestMatchers("/launches", "/login", "/register", "/watchlist", "/report").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
