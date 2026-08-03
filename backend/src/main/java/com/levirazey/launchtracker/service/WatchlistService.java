@@ -9,6 +9,8 @@ import com.levirazey.launchtracker.exception.ResourceNotFoundException;
 import com.levirazey.launchtracker.model.Launch;
 import com.levirazey.launchtracker.repository.UserRepository;
 import com.levirazey.launchtracker.repository.WatchlistRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Service
 public class WatchlistService {
+
+    private static final Logger log = LoggerFactory.getLogger(WatchlistService.class);
 
     private final WatchlistRepository watchlistRepository;
     private final UserRepository userRepository;
@@ -31,7 +35,7 @@ public class WatchlistService {
         try {
             return launchLibraryService.getLaunchById(launchId);
         } catch (Exception e) {
-            System.out.println("Launch lookup failed for " + launchId + ": " + e.getMessage());
+            log.warn("Launch lookup failed for {}: {}", launchId, e.getMessage());
             return null;
         }
     }
