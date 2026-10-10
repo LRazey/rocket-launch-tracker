@@ -1,8 +1,7 @@
 # Rocket Launch Tracker
 
 A full-stack web application for space enthusiasts to browse upcoming rocket
-launches and manage a personal watchlist. Built for the WGU D424 Software
-Engineering Capstone.
+launches and manage a personal watchlist.
 
 ## Overview
 
@@ -28,10 +27,6 @@ SpaceLaunchTracker/
   frontend/   React single-page app
 ```
 
-## Getting Started
-
-_Setup and run instructions will be documented here as the application is built
-(this section will become the maintenance user guide required for Task 3, Part C)._
 
 ## Author
 
